@@ -4,6 +4,8 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "gen": "turbo gen icons",
+    "clean": "turbo daemon clean",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -19,5 +21,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "antd": "^5.20.4",
+    "dexie": "^4.0.8",
+    "dexie-react-hooks": "^1.1.7"
+  }
 }
