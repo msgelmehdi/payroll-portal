@@ -1,58 +1,84 @@
-import { Input, notification } from "antd";
+import { Card, Input, notification } from "antd";
 import styled from "styled-components";
 import { Button, Form } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { withoutAuth } from "../../../utils/hoc";
-import { ISignUpBody } from "@repo/lib";
+import { db, ICurrentUser, ISignUpBody, setUser } from "@repo/lib";
+import { LogoIcon } from "@repo/icons";
+import { useAuth } from "../../../utils/auth.provider";
 
 const SignUpPage = () => {
   const [signUpForm] = Form.useForm();
+  const { setCurrentUser } = useAuth();
+  const navigate = useNavigate();
 
-  const onFinish = (values: ISignUpBody) => {
-    console.log(values);
+  const handleSubmit = async ({
+    email,
+    name,
+    password,
+    organizationName,
+  }: ISignUpBody) => {
+    const userId = await db.Users.add({ email, name, password });
+    const organizationId = await db.Organizations.add({
+      userId,
+      name: organizationName,
+    });
     notification.open({
       type: "info",
       message: "Info",
-      description: `Welcome ${values.firstName}`,
+      description: `Welcome ${name}`,
     });
+    const currentUser: ICurrentUser = {
+      id: userId,
+      organizationId,
+      email,
+      name,
+      organizationName,
+    };
+    setCurrentUser(currentUser);
+    setUser(currentUser);
+    navigate("/");
   };
 
   return (
     <StyledSignUpPage>
+      <StyledLogo>
+        <LogoIcon />
+      </StyledLogo>
       <Form
-        onFinish={onFinish}
+        onFinish={handleSubmit}
         initialValues={{ remember: true }}
         form={signUpForm}
       >
         <Form.Item
-          name="firstName"
+          name="name"
           rules={[
             {
+              whitespace: true,
               required: true,
-              message: `Field_firstName`,
+              message: "Name is required.",
             },
           ]}
         >
-          <StyledInput
+          <Input
             autoComplete="new-password"
-            size="large"
-            placeholder="firstName"
+            placeholder="name"
             maxLength={255}
           />
         </Form.Item>
         <Form.Item
-          name="lastName"
+          name="organizationName"
           rules={[
             {
+              whitespace: true,
               required: true,
-              message: `Field_lastName`,
+              message: "Organization is required.",
             },
           ]}
         >
-          <StyledInput
+          <Input
             autoComplete="new-password"
-            size="large"
-            placeholder={"lastName"}
+            placeholder={"Organization name"}
             maxLength={255}
           />
         </Form.Item>
@@ -60,18 +86,18 @@ const SignUpPage = () => {
           name="email"
           rules={[
             {
+              whitespace: true,
               required: true,
-              message: `Field_email`,
+              message: "Email is required",
             },
             {
               type: "email",
-              message: `Error_email`,
+              message: "Email is invalid",
             },
           ]}
         >
-          <StyledInput
+          <Input
             autoComplete="new-password"
-            size="large"
             placeholder="Enter your email"
             maxLength={255}
           />
@@ -79,39 +105,62 @@ const SignUpPage = () => {
         <Form.Item
           name="password"
           rules={[
-            { required: true, message: `Field_password` },
+            {
+              whitespace: true,
+              required: true,
+              message: "Password is required.",
+            },
             {
               validator: (_, value) => {
                 if (value && value.length < 8) {
-                  return Promise.reject(new Error(`Password_length2`));
+                  return Promise.reject(
+                    new Error(
+                      "Password must be 8 or more characters in length."
+                    )
+                  );
                 }
                 if (value && !/[A-Z]/.test(value)) {
-                  return Promise.reject(new Error(`Uppercase_password`));
+                  return Promise.reject(
+                    new Error(
+                      "Password must contain 1 or more uppercase characters."
+                    )
+                  );
                 }
                 if (value && !/[a-z]/.test(value)) {
-                  return Promise.reject(new Error(`Lowercase_password`));
+                  return Promise.reject(
+                    new Error(
+                      "Password must contain 1 or more lowercase characters."
+                    )
+                  );
                 }
                 if (value && !/[-+_!@#$%^&*,.?]/.test(value)) {
-                  return Promise.reject(new Error(`Symbol_password`));
+                  return Promise.reject(
+                    new Error(
+                      "Password must contain 1 or more special characters."
+                    )
+                  );
                 }
                 if (value && !/[0-9]/.test(value)) {
-                  return Promise.reject(new Error(`Digit_password`));
+                  return Promise.reject(
+                    new Error(
+                      "Password must contain 1 or more digit characters."
+                    )
+                  );
                 }
                 return Promise.resolve();
               },
             },
           ]}
         >
-          <StyledPasswordInput
+          <Input.Password
             autoComplete="new-password"
-            size="large"
-            placeholder="Enter password"
-            maxLength={16}
+            placeholder="Enter your password"
+            maxLength={255}
           />
         </Form.Item>
 
         <Form.Item>
-          <Button size="large" htmlType="submit">
+          <Button style={{ width: "100%" }} type="primary" htmlType="submit">
             Register
           </Button>
         </Form.Item>
@@ -127,24 +176,16 @@ const SignUpPage = () => {
 
 export default withoutAuth(SignUpPage);
 
-const StyledSignUpPage = styled.div`
-  display: flex;
-  padding: 10px;
-  height: calc(100vh - 20px);
+const StyledSignUpPage = styled(Card)`
+  width: 500px;
+  margin: auto;
+  margin-top: 100px;
 `;
 
-const StyledInput = styled(Input)`
-  background-color: #e8f0fe !important;
-  border: none;
-  font-size: 14px;
-  padding: 13px !important;
-  height: 40px;
-`;
-
-const StyledPasswordInput = styled(Input.Password)`
-  background-color: #e8f0fe !important;
-  border: none;
-  font-size: 14px;
-  height: 40px;
-  padding-top: 4px;
+const StyledLogo = styled.div`
+  font-size: 60px;
+  text-align: center;
+  border-bottom: 1px solid #cbcbcb;
+  color: #e91419;
+  margin-bottom: 30px;
 `;

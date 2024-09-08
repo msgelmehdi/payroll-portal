@@ -3,6 +3,7 @@ import { RouteObject, Outlet, Navigate } from "react-router-dom";
 import { NotFoundPage, Loading } from "@repo/lib";
 import { AuthProvider } from "../utils/auth.provider";
 import { SharedLayout } from "../layout/SharedLayout";
+import { ThemeProvider } from "../utils/theme.provider";
 
 const AuthApp = lazy(() => import("../modules/auth/AuthApp"));
 const EmployeesApp = lazy(() => import("../modules/employees/EmployeesApp"));
@@ -13,9 +14,11 @@ export const routes: RouteObject[] = [
     path: "/",
     element: (
       <AuthProvider>
-        <SharedLayout>
-          <Outlet />
-        </SharedLayout>
+        <ThemeProvider>
+          <SharedLayout>
+            <Outlet />
+          </SharedLayout>
+        </ThemeProvider>
       </AuthProvider>
     ),
     children: [
@@ -45,9 +48,11 @@ export const routes: RouteObject[] = [
     path: `/auth/*`,
     element: (
       <AuthProvider>
-        <Suspense fallback={<Loading />}>
-          <AuthApp />
-        </Suspense>
+        <ThemeProvider>
+          <Suspense fallback={<Loading />}>
+            <AuthApp />
+          </Suspense>
+        </ThemeProvider>
       </AuthProvider>
     ),
   },

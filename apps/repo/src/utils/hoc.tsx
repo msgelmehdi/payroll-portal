@@ -6,13 +6,13 @@ import { Loading } from "@repo/lib";
 export const withAuth = (Component: React.FC) => {
   const AuthenticatedComponent = () => {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { currentUser } = useAuth();
 
     useEffect(() => {
-      if (!isAuthenticated) navigate("/auth/sign-in");
-    }, [isAuthenticated === false]);
+      if (!currentUser) navigate("/auth/sign-in");
+    }, [!currentUser]);
 
-    return isAuthenticated ? <Component /> : <Loading />;
+    return currentUser ? <Component /> : <Loading />;
   };
 
   return AuthenticatedComponent;
@@ -22,13 +22,13 @@ export const withoutAuth = (Component: React.FC) => {
   const NotAuthenticatedComponent = () => {
     const navigate = useNavigate();
 
-    const { isAuthenticated } = useAuth();
+    const { currentUser } = useAuth();
 
     useEffect(() => {
-      if (isAuthenticated) navigate("/");
-    }, [isAuthenticated === true]);
+      if (currentUser) navigate("/");
+    }, [!!currentUser]);
 
-    return !isAuthenticated ? <Component /> : <Loading />;
+    return !currentUser ? <Component /> : <Loading />;
   };
 
   return NotAuthenticatedComponent;

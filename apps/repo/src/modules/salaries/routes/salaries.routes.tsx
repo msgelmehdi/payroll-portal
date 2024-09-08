@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import SalariesPage from "../pages/SalariesPage";
 import SalariesProcessingPage from "../pages/SalariesProcessingPage";
 import { NotFoundPage } from "@repo/lib";
+import SalariesPaymentsPage from "../pages/SalariesPaymentsPage";
 
 export const SalariesRoutes = [
   {
@@ -15,6 +16,10 @@ export const SalariesRoutes = [
       {
         path: ":employeeId",
         element: <SalariesProcessingPage />,
+      },
+      {
+        path: "payments",
+        element: <SalariesPaymentsPage />,
       },
     ],
   },

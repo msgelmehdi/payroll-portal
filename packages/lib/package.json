@@ -7,7 +7,7 @@
   "types": "./index.tsx",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "dev": "tsup index.tsx --format cjs --watch --external react"
+    "dev": "tsup index.tsx --format cjs --watch --external react --config tsup.config.js"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

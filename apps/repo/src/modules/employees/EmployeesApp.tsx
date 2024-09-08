@@ -6,14 +6,14 @@ const EmployeesApp = () => {
   const element = useRoutes(EmployeesRoutes);
 
   return (
-    <StyledEmployeesApp id="package-management-modal">
-      {element}
-    </StyledEmployeesApp>
+    <StyledEmployeesApp id="employees-modal">{element}</StyledEmployeesApp>
   );
 };
 
 export default EmployeesApp;
 
 const StyledEmployeesApp = styled.div`
-  height: calc(100vh - 80px);
+  height: 100%;
+  width: 100%;
+  position: relative;
 `;

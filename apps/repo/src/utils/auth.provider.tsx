@@ -1,25 +1,24 @@
+import { getUser, ICurrentUser } from "@repo/lib";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface ContextType {
-  isAuthenticated: boolean;
-  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: ICurrentUser | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<ICurrentUser | null>>;
 }
 
 const AuthContext = createContext<ContextType>({
-  isAuthenticated: false,
-  setAuthenticated: () => {},
+  currentUser: null,
+  setCurrentUser: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setAuthenticated] = useState(false);
-
-  console.log("eeeeeee", isAuthenticated);
+  const [currentUser, setCurrentUser] = useState(getUser());
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
-        setAuthenticated,
+        currentUser,
+        setCurrentUser,
       }}
     >
       {children}

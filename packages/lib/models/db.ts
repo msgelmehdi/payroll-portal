@@ -1,34 +1,63 @@
 import Dexie, { Table } from "dexie";
 import { populate } from "./populate";
-import { TodoItem } from "./TodoItem";
-import { TodoList } from "./TodoList";
+import {
+  IEmployee,
+  IOrganization,
+  IPayment,
+  ISalary,
+  IUser,
+} from "../interfaces/repo.interface";
+import { removeUser } from "../helpers/storage";
 
-export class TodoDB extends Dexie {
-  todoLists!: Table<TodoList, number>;
-  todoItems!: Table<TodoItem, number>;
+export class PayrollPortalDB extends Dexie {
+  Users!: Table<IUser, number>;
+  Organizations!: Table<IOrganization, number>;
+  Employees!: Table<IEmployee, number>;
+  Salaries!: Table<ISalary, number>;
+  Payments!: Table<IPayment, number>;
+
   constructor() {
-    super("TodoDB");
+    super("PayrollPortalDB");
     this.version(1).stores({
-      todoLists: "++id",
-      todoItems: "++id, todoListId",
+      Users: "++id, email, password",
+      Organizations: "++id, userId",
+      Employees: "++id, organizationId",
+      Salaries: "++id, employeeId",
+      Payments: "++id, salaryId",
     });
   }
 
-  deleteList(todoListId: number) {
-    return this.transaction("rw", this.todoItems, this.todoLists, () => {
-      this.todoItems.where({ todoListId }).delete();
-      this.todoLists.delete(todoListId);
+  addEmployee(employee: IEmployee) {
+    return this.transaction("rw", this.Employees, () => {
+      this.Employees.add(employee);
+    });
+  }
+
+  updateEmployee(employee: IEmployee) {
+    return this.transaction("rw", this.Employees, () => {
+      this.Employees.update(employee, { ...employee });
+    });
+  }
+
+  deleteEmployee(employeeId: number) {
+    return this.transaction("rw", this.Salaries, this.Employees, () => {
+      this.Salaries.where({ employeeId }).delete();
+      this.Employees.delete(employeeId);
     });
   }
 }
 
-export const db = new TodoDB();
+export const db = new PayrollPortalDB();
 
 db.on("populate", populate);
 
-export function resetDatabase() {
-  return db.transaction("rw", db.todoLists, db.todoItems, async () => {
-    await Promise.all(db.tables.map((table) => table.clear()));
-    await populate();
-  });
-}
+export const resetDatabase = async () => {
+  await db.Users.clear();
+  await db.Organizations.clear();
+  await db.Employees.clear();
+  await db.Salaries.clear();
+  await db.Payments.clear();
+  await populate();
+  removeUser();
+  location.reload();
+};
