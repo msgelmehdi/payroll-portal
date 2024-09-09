@@ -50,8 +50,8 @@ const SalariesPaymentsPage = () => {
     },
     {
       title: "Total",
-      dataIndex: "total",
       key: "total",
+      render: (_, record) => <>{record.total} $</>,
     },
   ];
 

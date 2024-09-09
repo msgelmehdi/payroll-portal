@@ -90,15 +90,23 @@ const EmployeeSalaryProcessModal = ({
       destroyOnClose
       width="50%"
       onCancel={handleCloseModal}
-      footer={[
-        <Button key="back" onClick={handleCloseModal}>
-          Cancel
-        </Button>,
-        <Button key="submit" type="primary" onClick={() => salaryForm.submit()}>
-          Confirm
-        </Button>,
-      ]}
-      title="Salary pay session process"
+      footer={
+        salaryToEdit?.paid
+          ? false
+          : [
+              <Button key="back" onClick={handleCloseModal}>
+                Cancel
+              </Button>,
+              <Button
+                key="submit"
+                type="primary"
+                onClick={() => salaryForm.submit()}
+              >
+                Confirm
+              </Button>,
+            ]
+      }
+      title={`Salary ${salaryToEdit?.paid ? "preview" : "pay"} session process`}
       styles={{
         wrapper: { position: "absolute" },
         mask: { position: "absolute" },
@@ -127,125 +135,156 @@ const EmployeeSalaryProcessModal = ({
             : "0 $"}
         </StyledValue>
         <StyledLabel>Additions</StyledLabel>
-        <Form.List name="additions">
-          {(fields, { add, remove }) => (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {fields.map((field) => (
-                <Row style={{ margin: 0 }} gutter={[15, 0]} key={field.key}>
-                  <Col span={11}>
-                    <Form.Item
-                      name={[field.name, "type"]}
-                      rules={[
-                        {
-                          whitespace: true,
-                          required: true,
-                          message: "Type is required.",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Type" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={11}>
-                    <Form.Item
-                      name={[field.name, "amount"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Amount is required.",
-                        },
-                      ]}
-                    >
-                      <InputNumber
-                        placeholder="Amount"
-                        min={1}
-                        prefix="$"
-                        style={{ width: "100%" }}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col style={{ marginTop: "5px" }} span={1}>
-                    <Popconfirm
-                      title="Are you sure to remove this addition?"
-                      onConfirm={() => remove(field.name)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Tooltip title="Remove">
-                        <span style={{ cursor: "pointer", color: "#e91419" }}>
-                          <DeleteIcon />
-                        </span>
-                      </Tooltip>
-                    </Popconfirm>
-                  </Col>
-                </Row>
-              ))}
-              <Button type="default" onClick={() => add()} block>
-                Add an addition
-              </Button>
-            </div>
-          )}
-        </Form.List>
+        {salaryToEdit?.paid ? (
+          <StyledValue>
+            {salaryToEdit?.additions?.length
+              ? salaryToEdit?.additions?.map(
+                  ({ type, amount }) => (
+                    <div key={type}>
+                      {type}: {amount} $
+                    </div>
+                  ),
+                  0
+                )
+              : "0 $"}
+          </StyledValue>
+        ) : (
+          <Form.List name="additions">
+            {(fields, { add, remove }) => (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {fields.map((field) => (
+                  <Row style={{ margin: 0 }} gutter={[15, 0]} key={field.key}>
+                    <Col span={11}>
+                      <Form.Item
+                        name={[field.name, "type"]}
+                        rules={[
+                          {
+                            whitespace: true,
+                            required: true,
+                            message: "Type is required.",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Type" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={11}>
+                      <Form.Item
+                        name={[field.name, "amount"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Amount is required.",
+                          },
+                        ]}
+                      >
+                        <InputNumber
+                          placeholder="Amount"
+                          min={1}
+                          prefix="$"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col style={{ marginTop: "5px" }} span={1}>
+                      <Popconfirm
+                        title="Are you sure to remove this addition?"
+                        onConfirm={() => remove(field.name)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Tooltip title="Remove">
+                          <span style={{ cursor: "pointer", color: "#e91419" }}>
+                            <DeleteIcon />
+                          </span>
+                        </Tooltip>
+                      </Popconfirm>
+                    </Col>
+                  </Row>
+                ))}
+                <Button type="default" onClick={() => add()} block>
+                  Add an addition
+                </Button>
+              </div>
+            )}
+          </Form.List>
+        )}
         <StyledLabel>Deductions</StyledLabel>
-        <Form.List name="deductions">
-          {(fields, { add, remove }) => (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {fields.map((field) => (
-                <Row style={{ margin: 0 }} gutter={[15, 0]} key={field.key}>
-                  <Col span={11}>
-                    <Form.Item
-                      name={[field.name, "type"]}
-                      rules={[
-                        {
-                          whitespace: true,
-                          required: true,
-                          message: "Type is required.",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Type" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={11}>
-                    <Form.Item
-                      name={[field.name, "amount"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Amount is required.",
-                        },
-                      ]}
-                    >
-                      <InputNumber
-                        placeholder="Amount"
-                        min={1}
-                        prefix="$"
-                        style={{ width: "100%" }}
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col style={{ marginTop: "5px" }} span={1}>
-                    <Popconfirm
-                      title="Are you sure to remove this deduction?"
-                      onConfirm={() => remove(field.name)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Tooltip title="Remove">
-                        <span style={{ cursor: "pointer", color: "#e91419" }}>
-                          <DeleteIcon />
-                        </span>
-                      </Tooltip>
-                    </Popconfirm>
-                  </Col>
-                </Row>
-              ))}
-              <Button type="default" onClick={() => add()} block>
-                Add a deduction
-              </Button>
-            </div>
-          )}
-        </Form.List>
+        {salaryToEdit?.paid ? (
+          <StyledValue>
+            {salaryToEdit?.deductions?.length
+              ? salaryToEdit?.deductions?.map(
+                  ({ type, amount }) => (
+                    <div key={type}>
+                      {type}: - {amount} $
+                    </div>
+                  ),
+                  0
+                )
+              : "0 $"}
+          </StyledValue>
+        ) : (
+          <Form.List name="deductions">
+            {(fields, { add, remove }) => (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {fields.map((field) => (
+                  <Row style={{ margin: 0 }} gutter={[15, 0]} key={field.key}>
+                    <Col span={11}>
+                      <Form.Item
+                        name={[field.name, "type"]}
+                        rules={[
+                          {
+                            whitespace: true,
+                            required: true,
+                            message: "Type is required.",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Type" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={11}>
+                      <Form.Item
+                        name={[field.name, "amount"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Amount is required.",
+                          },
+                        ]}
+                      >
+                        <InputNumber
+                          placeholder="Amount"
+                          min={1}
+                          prefix="$"
+                          style={{ width: "100%" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col style={{ marginTop: "5px" }} span={1}>
+                      <Popconfirm
+                        title="Are you sure to remove this deduction?"
+                        onConfirm={() => remove(field.name)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Tooltip title="Remove">
+                          <span style={{ cursor: "pointer", color: "#e91419" }}>
+                            <DeleteIcon />
+                          </span>
+                        </Tooltip>
+                      </Popconfirm>
+                    </Col>
+                  </Row>
+                ))}
+                <Button type="default" onClick={() => add()} block>
+                  Add a deduction
+                </Button>
+              </div>
+            )}
+          </Form.List>
+        )}
+
         <StyledLabel>Total salary</StyledLabel>
         <StyledValue>
           {(salaryToEdit?.employee?.basicSalary ?? 0) +
@@ -253,20 +292,28 @@ const EmployeeSalaryProcessModal = ({
               (total, allowance) => total + allowance.amount,
               0
             ) ?? 0) +
-            (additionsValue?.reduce(
+            ((additionsValue?.length
+              ? additionsValue
+              : salaryToEdit?.additions
+            )?.reduce(
               (total: number, addition: ISalaryAddition) =>
                 total + (addition?.amount ?? 0),
               0
             ) ?? 0) -
-            (deductionsValue?.reduce(
+            ((deductionsValue?.length
+              ? deductionsValue
+              : salaryToEdit?.deductions
+            )?.reduce(
               (total: number, deduction: ISalaryAddition) =>
                 total + (deduction?.amount ?? 0),
               0
             ) ?? 0)}
         </StyledValue>
-        <Form.Item name="endOfService">
-          <Checkbox>Mark as end of service.</Checkbox>
-        </Form.Item>
+        {!salaryToEdit?.paid && (
+          <Form.Item name="endOfService">
+            <Checkbox>Mark as end of service.</Checkbox>
+          </Form.Item>
+        )}
       </Form>
     </StyledEmployeeSalaryProcessModal>
   );

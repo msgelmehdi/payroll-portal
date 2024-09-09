@@ -1,14 +1,6 @@
-import {
-  Badge,
-  Calendar,
-  CalendarProps,
-  Form,
-  Modal,
-  notification,
-} from "antd";
+import { Badge, Calendar, CalendarProps, Modal, notification } from "antd";
 import { styled } from "styled-components";
-import { db, IEmployee, IEmployeeSalaries } from "@repo/lib";
-import { useAuth } from "../../../utils/auth.provider";
+import { db, IEmployeeSalaries } from "@repo/lib";
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import CalendarHeaderRender from "./CalendarHeaderRender";
@@ -25,41 +17,9 @@ const EmployeeSalaryMonthModal = ({
   employeeSalaryMonth,
   setEmployeeSalaryMonth,
 }: EmployeeSalaryMonthModalProps) => {
-  const { currentUser } = useAuth();
-
-  const [salariesForm] = Form.useForm();
-
   const handleCloseModal = () => {
     setEmployeeSalaryMonth(null);
   };
-
-  const handleOnSuccess = (description: string) => {
-    notification.open({
-      type: "success",
-      message: "Success",
-      description,
-    });
-  };
-
-  const handleFormConfirm = (employee: IEmployee) => {
-    // const formattedDate = (employee.joiningDate as any).toISOString();
-  };
-
-  // useEffect(() => {
-  //   employeeForm.setFieldsValue(
-  //     employeeToEdit
-  //       ? {
-  //           ...employeeToEdit,
-  //           joiningDate: dayjs(employeeToEdit?.joiningDate),
-  //         }
-  //       : {
-  //           name: "",
-  //           joiningDate: "",
-  //           basicSalary: null,
-  //           salaryAllowances: [],
-  //         }
-  //   );
-  // }, [employeeToEdit, employeeForm]);
 
   const monthSelectedSalary = (value: Dayjs) => {
     const selectedSalary = employeeSalaryMonth?.salaries.find((salary) =>

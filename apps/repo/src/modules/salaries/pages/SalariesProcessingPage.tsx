@@ -6,7 +6,7 @@ import type { ColumnsType } from "antd/es/table";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAuth } from "../../../utils/auth.provider";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Button, Row, Space, Table } from "antd";
+import { Badge, Button, Row, Space, Table } from "antd";
 import EmployeeSalaryProcessModal from "../components/EmployeeSalaryProcessModal";
 
 const SalariesProcessingPage = () => {
@@ -96,17 +96,33 @@ const SalariesProcessingPage = () => {
       ),
     },
     {
+      title: "Status",
+      key: "paid",
+      render: (_, record) => (
+        <Badge
+          color={record.paid ? "#a2dcff" : "#ffa7a2"}
+          text={record.paid ? "Paid" : "Unpaid"}
+        />
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => setSalaryToEdit(record)}>
-            Process
+          <Button
+            type={record.paid ? "default" : "primary"}
+            onClick={() => setSalaryToEdit(record)}
+          >
+            {record.paid ? "Preview" : "Process"}
           </Button>
         </Space>
       ),
     },
   ];
+
+  const liveSalaryToEdit =
+    salaries?.find((salary) => salary.id === salaryToEdit?.id) ?? null;
 
   return (
     <StyledSalariesProcessingPage>
@@ -124,7 +140,7 @@ const SalariesProcessingPage = () => {
         pagination={{ position: ["topLeft"] }}
       />
       <EmployeeSalaryProcessModal
-        salaryToEdit={salaryToEdit}
+        salaryToEdit={liveSalaryToEdit}
         setSalaryToEdit={setSalaryToEdit}
       />
     </StyledSalariesProcessingPage>

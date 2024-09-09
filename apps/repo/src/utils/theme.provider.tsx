@@ -17,10 +17,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-      <FloatButton
+      {/* <FloatButton
         onClick={() => resetDatabase()}
         icon={<DatabaseOutlined />}
-        description="Reset local database"
+        description="Reset & populate local database"
         shape="square"
         type="primary"
         style={{
@@ -29,7 +29,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
           width: "150px",
           insetInlineEnd: 50,
         }}
-      />
+      /> */}
     </ConfigProvider>
   );
 };

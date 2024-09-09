@@ -1,15 +1,11 @@
-import { styled } from "styled-components";
-import { Button, Card, Form, Input, notification } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Form, Input, notification } from "antd";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "../../../utils/auth.provider";
 import { withoutAuth } from "../../../utils/hoc";
-import { LogoIcon } from "@repo/icons";
 import { db, ICurrentUser, ISignInBody, setUser } from "@repo/lib";
 
 const SignInPage = () => {
-  const navigate = useNavigate();
-
   const [signInForm] = Form.useForm();
 
   const { setCurrentUser } = useAuth();
@@ -53,80 +49,61 @@ const SignInPage = () => {
   };
 
   return (
-    <StyledSignInPage>
-      <StyledLogo>
-        <LogoIcon />
-      </StyledLogo>
-      <Form
-        form={signInForm}
-        onFinish={handleSubmit}
-        initialValues={{ email: "elmehdi@example.com", password: "Admin@123" }}
+    <Form
+      form={signInForm}
+      onFinish={handleSubmit}
+      initialValues={{ email: "elmehdi@example.com", password: "Admin@123" }}
+    >
+      <Form.Item
+        name="email"
+        rules={[
+          {
+            whitespace: true,
+            required: true,
+            message: "Email is required.",
+          },
+          {
+            type: "email",
+            message: "Email is invalid.",
+          },
+        ]}
       >
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              whitespace: true,
-              required: true,
-              message: "Email is required.",
-            },
-            {
-              type: "email",
-              message: "Email is invalid.",
-            },
-          ]}
-        >
-          <Input
-            autoComplete="new-password"
-            placeholder="Enter your email"
-            maxLength={255}
-            name="Email"
-          />
-        </Form.Item>
+        <Input
+          autoComplete="new-password"
+          placeholder="Enter your email"
+          maxLength={255}
+          name="Email"
+        />
+      </Form.Item>
 
-        <Form.Item
+      <Form.Item
+        name="password"
+        rules={[
+          {
+            whitespace: true,
+            required: true,
+            message: "Password is required.",
+          },
+        ]}
+      >
+        <Input.Password
+          autoComplete="new-password"
+          placeholder="Enter your password"
           name="password"
-          rules={[
-            {
-              whitespace: true,
-              required: true,
-              message: "Password is required.",
-            },
-          ]}
-        >
-          <Input.Password
-            autoComplete="new-password"
-            placeholder="Enter your password"
-            name="password"
-          />
-        </Form.Item>
-        <Link to="/auth/sign-in">Forget password</Link>
+        />
+      </Form.Item>
+      <Link to="/auth/sign-in">Forget password</Link>
 
-        <Form.Item style={{ marginTop: "30px" }}>
-          <Button style={{ width: "100%" }} type="primary" htmlType="submit">
-            Login
-          </Button>
-        </Form.Item>
-        <Form.Item style={{ textAlign: "center" }}>
-          Don't have an account? <Link to={"/auth/sign-up"}>Register here</Link>
-        </Form.Item>
-      </Form>
-    </StyledSignInPage>
+      <Form.Item style={{ marginTop: "30px" }}>
+        <Button style={{ width: "100%" }} type="primary" htmlType="submit">
+          Login
+        </Button>
+      </Form.Item>
+      <Form.Item style={{ textAlign: "center" }}>
+        Don't have an account? <Link to={"/auth/sign-up"}>Register here</Link>
+      </Form.Item>
+    </Form>
   );
 };
 
 export default withoutAuth(SignInPage);
-
-const StyledSignInPage = styled(Card)`
-  width: 500px;
-  margin: auto;
-  margin-top: 100px;
-`;
-
-const StyledLogo = styled.div`
-  font-size: 60px;
-  text-align: center;
-  border-bottom: 1px solid #cbcbcb;
-  color: #e91419;
-  margin-bottom: 30px;
-`;
