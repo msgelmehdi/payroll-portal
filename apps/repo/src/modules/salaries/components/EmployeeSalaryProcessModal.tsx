@@ -83,6 +83,14 @@ const EmployeeSalaryProcessModal = ({
     }
   };
 
+  const basicSalary = salaryToEdit?.paid
+    ? salaryToEdit.basicSalary
+    : salaryToEdit?.employee?.basicSalary;
+
+  const salaryAllowances = salaryToEdit?.paid
+    ? salaryToEdit?.salaryAllowances
+    : salaryToEdit?.employee?.salaryAllowances;
+
   return (
     <StyledEmployeeSalaryProcessModal
       getContainer="#salaries-modal"
@@ -120,11 +128,11 @@ const EmployeeSalaryProcessModal = ({
           {dayjs(salaryToEdit?.month).format("MMMM YYYY")}
         </StyledValue>
         <StyledLabel>Basic salary</StyledLabel>
-        <StyledValue>{salaryToEdit?.employee?.basicSalary} $</StyledValue>
-        <StyledLabel>Total salary allowances</StyledLabel>
+        <StyledValue>{basicSalary} $</StyledValue>
+        <StyledLabel>Salary allowances</StyledLabel>
         <StyledValue>
-          {salaryToEdit?.employee?.salaryAllowances.length
-            ? salaryToEdit?.employee?.salaryAllowances?.map(
+          {salaryAllowances?.length
+            ? salaryAllowances?.map(
                 ({ type, amount }) => (
                   <div key={type}>
                     {type}: {amount} $
@@ -287,8 +295,8 @@ const EmployeeSalaryProcessModal = ({
 
         <StyledLabel>Total salary</StyledLabel>
         <StyledValue>
-          {(salaryToEdit?.employee?.basicSalary ?? 0) +
-            (salaryToEdit?.employee?.salaryAllowances?.reduce(
+          {(basicSalary ?? 0) +
+            (salaryAllowances?.reduce(
               (total, allowance) => total + allowance.amount,
               0
             ) ?? 0) +
