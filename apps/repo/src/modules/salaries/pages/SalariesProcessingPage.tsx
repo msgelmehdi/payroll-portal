@@ -78,11 +78,11 @@ const SalariesProcessingPage = () => {
       key: "salary",
       render: (_, record) => (
         <>
-          {record.employee?.basicSalary +
-            (record.employee?.salaryAllowances?.reduce(
-              (total, allowance) => total + allowance.amount,
-              0
-            ) ?? 0) +
+          {(record?.paid ? record.basicSalary : record?.employee?.basicSalary) +
+            ((record?.paid
+              ? record.salaryAllowances
+              : record?.employee?.salaryAllowances
+            )?.reduce((total, allowance) => total + allowance.amount, 0) ?? 0) +
             (record.additions?.reduce(
               (total, addition) => total + addition.amount,
               0

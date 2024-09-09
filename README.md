@@ -18,7 +18,8 @@ This Turborepo includes the following packages/apps:
 ### Apps and Packages
 
 - `repo`: a [React.js](https://react.dev/) app
-- `@repo/lib`: a stub React component library shared by `repo` application
+- `@repo/lib`: a library shared by `repo` application
+- `@repo/icons`: a library of icons as React components, shared by the `repo` application
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 

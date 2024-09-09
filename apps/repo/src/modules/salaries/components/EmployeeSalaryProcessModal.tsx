@@ -33,6 +33,7 @@ const EmployeeSalaryProcessModal = ({
   const deductionsValue = Form.useWatch("deductions", salaryForm);
 
   const handleCloseModal = () => {
+    salaryForm.setFieldsValue({ additions: [], deductions: [] });
     setSalaryToEdit(null);
   };
 
@@ -315,7 +316,8 @@ const EmployeeSalaryProcessModal = ({
               (total: number, deduction: ISalaryAddition) =>
                 total + (deduction?.amount ?? 0),
               0
-            ) ?? 0)}
+            ) ?? 0)}{" "}
+          $
         </StyledValue>
         {!salaryToEdit?.paid && (
           <Form.Item name="endOfService">
