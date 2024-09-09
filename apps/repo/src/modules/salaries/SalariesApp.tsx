@@ -15,7 +15,7 @@ const items: TabsProps["items"] = [
   },
   {
     key: "payments",
-    label: "payments",
+    label: "Payments",
   },
 ];
 

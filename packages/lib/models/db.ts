@@ -23,7 +23,7 @@ export class PayrollPortalDB extends Dexie {
       Organizations: "++id, userId",
       Employees: "++id, organizationId",
       Salaries: "++id, employeeId",
-      Payments: "++id, salaryId",
+      Payments: "++id, salaryId, organizationId",
     });
   }
 
@@ -52,9 +52,21 @@ export class PayrollPortalDB extends Dexie {
     });
   }
 
+  updateSalary(salary: ISalary) {
+    return this.transaction("rw", this.Salaries, () => {
+      this.Salaries.update(salary, { ...salary });
+    });
+  }
+
   deleteSalary(salaryId: number) {
     return this.transaction("rw", this.Salaries, () => {
       this.Salaries.delete(salaryId);
+    });
+  }
+
+  addPayment(payment: IPayment) {
+    return this.transaction("rw", this.Payments, () => {
+      this.Payments.add(payment);
     });
   }
 }

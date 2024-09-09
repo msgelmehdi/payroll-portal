@@ -5,12 +5,10 @@ import { db, IEmployeeSalaries, SearchInput, useDebounce } from "@repo/lib";
 import { useAuth } from "../../../utils/auth.provider";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Row, Space, Table, Tooltip } from "antd";
-import { ColumnsType } from "antd/es/table";
+import type { ColumnsType } from "antd/es/table";
 import { EditIcon } from "@repo/icons";
 import EmployeeSalaryMonthModal from "../components/EmployeeSalaryMonthModal";
 import dayjs from "dayjs";
-
-const elementsPerPage = 10;
 
 const SalariesPage = () => {
   const [isSearchLoading, setSearchLoading] = useState(false);
@@ -74,17 +72,21 @@ const SalariesPage = () => {
     },
     {
       title: "Basic salary",
-      dataIndex: "basicSalary",
       key: "basicSalary",
+      render: (_, record) => <>{record.basicSalary} $</>,
     },
     {
       title: "Total salary allowances",
       key: "salaryAllowances",
-      render: (_, record) =>
-        record.salaryAllowances?.reduce(
-          (total, allowance) => total + allowance.amount,
-          0
-        ) ?? 0,
+      render: (_, record) => (
+        <>
+          {record.salaryAllowances?.reduce(
+            (total, allowance) => total + allowance.amount,
+            0
+          ) ?? 0}{" "}
+          $
+        </>
+      ),
     },
     {
       title: "Action",

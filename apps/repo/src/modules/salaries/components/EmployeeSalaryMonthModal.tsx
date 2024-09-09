@@ -84,11 +84,6 @@ const EmployeeSalaryMonthModal = ({
     return dayjs(d1).isSame(dayjs(d2), "month");
   };
 
-  console.log(
-    "salaries",
-    employeeSalaryMonth?.salaries.map((v) => v.month)
-  );
-
   const handleSelectMonth = (selected: Dayjs, { source }: SelectInfo) => {
     if (source === "month") {
       const selectedSalary = employeeSalaryMonth?.salaries?.find((salary) =>

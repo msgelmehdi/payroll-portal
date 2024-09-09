@@ -5,6 +5,14 @@ export interface IUser {
   password: string;
 }
 
+export interface ICurrentUser {
+  id: number;
+  name: string;
+  email: string;
+  organizationId: number;
+  organizationName: string;
+}
+
 export interface IOrganization {
   id?: number;
   userId: number;
@@ -21,27 +29,15 @@ export interface IEmployee {
   endOfService?: boolean;
 }
 
-export interface ICurrentUser {
-  id: number;
-  name: string;
-  email: string;
-  organizationId: number;
-  organizationName: string;
-}
-
-export interface IEmployeeSalaries extends IEmployee {
-  salaries: ISalary[];
-}
-
 export interface ISalary {
   id?: number;
   employeeId: number;
-  month: string; // create
-  additions: ISalaryAddition[]; // when creating the salary or payslip
-  deductions: ISalaryAddition[]; // check atg responses payload
-  basicSalary: number; // at that time filled after confirm from employee record
-  salaryAllowances: ISalaryAddition[]; // at that time filled after confirm from employee record
-  paid: boolean; // butoon action process if pending
+  month: string;
+  additions: ISalaryAddition[];
+  deductions: ISalaryAddition[];
+  basicSalary: number;
+  salaryAllowances: ISalaryAddition[];
+  paid: boolean;
 }
 
 export interface ISalaryAddition {
@@ -49,9 +45,19 @@ export interface ISalaryAddition {
   amount: number;
 }
 
-// got created when pay confirm PAID
+export interface IEmployeeSalaries extends IEmployee {
+  salaries: ISalary[];
+}
+
+export interface ISalaryEmployee extends ISalary {
+  employee: IEmployee;
+  endOfService?: boolean;
+}
+
 export interface IPayment {
   id?: number;
   salaryId: number;
-  ref: string; // random fill
+  organizationId: number;
+  total: number;
+  ref: string;
 }

@@ -69,7 +69,7 @@ export const populate = async () => {
           amount: 4000,
         },
       ],
-      joiningDate: "2024-11-03T23:00:00.000Z",
+      joiningDate: "2023-11-03T23:00:00.000Z",
     },
     {
       organizationId,
