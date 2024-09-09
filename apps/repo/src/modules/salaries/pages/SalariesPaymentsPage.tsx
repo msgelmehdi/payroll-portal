@@ -10,6 +10,7 @@ const SalariesPaymentsPage = () => {
 export default withAuth(SalariesPaymentsPage);
 
 const StyledSalariesPaymentsPage = styled.div`
-  height: calc(100vh - 100px);
-  padding: 15px 40px;
+  height: calc(100vh - 166px);
+  padding: 0 40px 40px;
+  overflow: auto;
 `;

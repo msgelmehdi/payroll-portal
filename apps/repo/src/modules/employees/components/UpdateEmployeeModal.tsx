@@ -255,6 +255,7 @@ const StyledLabel = styled.div<{ $required?: boolean }>`
   ${(p) =>
     p.$required &&
     `margin-left: 10px;
+    padding-bottom: 10px;
 
     &::before { 
     display: inline-block;

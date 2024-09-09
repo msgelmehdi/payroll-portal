@@ -19,6 +19,7 @@ const SalariesProcessingPage = () => {
       <></>
       checkbox if payments as end-of-service
       <></> show optional (gratuity {"{type, amount}[]"}) payments if applicable
+      mark employee as end of services add if there is gratuity payments
     </StyledSalariesProcessingPage>
   );
 };
@@ -26,6 +27,7 @@ const SalariesProcessingPage = () => {
 export default withAuth(SalariesProcessingPage);
 
 const StyledSalariesProcessingPage = styled.div`
-  height: calc(100vh - 100px);
-  padding: 15px 40px;
+  height: calc(100vh - 166px);
+  padding: 0 40px 40px;
+  overflow: auto;
 `;

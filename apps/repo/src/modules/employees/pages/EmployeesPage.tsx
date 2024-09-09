@@ -16,18 +16,18 @@ const EmployeesPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [isSearchLoading, setSearchLoading] = useState(false);
-  const [searchDashboard, setSearchDashboard] = useState("");
+  const [searchEmployee, setSearchEmployee] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const { currentUser } = useAuth();
 
-  const debouncedSearch = useDebounce(searchDashboard);
+  const debouncedSearch = useDebounce(searchEmployee);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchLoading(true);
-    setSearchDashboard(value);
+    setSearchEmployee(value);
     if (value === debouncedSearch) setSearchLoading(false);
   };
 

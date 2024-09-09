@@ -5,7 +5,17 @@ import { ReactNode } from "react";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <ConfigProvider theme={{ token: { colorPrimary: "#e91419" } }}>
+    <ConfigProvider
+      theme={{
+        token: { colorPrimary: "#e91419" },
+        components: {
+          Calendar: {
+            itemActiveBg: "#fff",
+            colorPrimary: "#000",
+          },
+        },
+      }}
+    >
       {children}
       <FloatButton
         onClick={() => resetDatabase()}

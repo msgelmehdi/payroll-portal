@@ -14,7 +14,7 @@ export const SalariesRoutes = [
         element: <SalariesPage />,
       },
       {
-        path: ":employeeId",
+        path: "processing",
         element: <SalariesProcessingPage />,
       },
       {

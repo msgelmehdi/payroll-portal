@@ -45,6 +45,18 @@ export class PayrollPortalDB extends Dexie {
       this.Employees.delete(employeeId);
     });
   }
+
+  addSalary(salary: ISalary) {
+    return this.transaction("rw", this.Salaries, () => {
+      this.Salaries.add(salary);
+    });
+  }
+
+  deleteSalary(salaryId: number) {
+    return this.transaction("rw", this.Salaries, () => {
+      this.Salaries.delete(salaryId);
+    });
+  }
 }
 
 export const db = new PayrollPortalDB();

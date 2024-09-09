@@ -18,6 +18,7 @@ export interface IEmployee {
   joiningDate: string;
   basicSalary: number;
   salaryAllowances: ISalaryAddition[];
+  endOfService?: boolean;
 }
 
 export interface ICurrentUser {
@@ -28,16 +29,19 @@ export interface ICurrentUser {
   organizationName: string;
 }
 
+export interface IEmployeeSalaries extends IEmployee {
+  salaries: ISalary[];
+}
+
 export interface ISalary {
   id?: number;
   employeeId: number;
   month: string; // create
-  year: string; // create
   additions: ISalaryAddition[]; // when creating the salary or payslip
   deductions: ISalaryAddition[]; // check atg responses payload
   basicSalary: number; // at that time filled after confirm from employee record
-  salaryAllowances: number; // at that time filled after confirm from employee record
-  status: "PENDING" | "PAID"; // butoon action process if pending
+  salaryAllowances: ISalaryAddition[]; // at that time filled after confirm from employee record
+  paid: boolean; // butoon action process if pending
 }
 
 export interface ISalaryAddition {
