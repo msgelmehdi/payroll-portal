@@ -1,5 +1,18 @@
 # Payroll Portal
 
+<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; align-items: center;">
+<img alt="payroll portal" src="screens/1.png" width="455">
+<img alt="payroll portal" src="screens/2.png" width="455">
+<img alt="payroll portal" src="screens/3.png" width="455">
+<img alt="payroll portal" src="screens/4.png" width="455">
+<img alt="payroll portal" src="screens/5.png" width="455">
+<img alt="payroll portal" src="screens/6.png" width="455">
+<img alt="payroll portal" src="screens/7.png" width="455">
+<img alt="payroll portal" src="screens/8.png" width="455">
+<img alt="payroll portal" src="screens/9.png" width="455">
+<img alt="payroll portal" src="screens/10.png" width="455">
+</div>
+
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
